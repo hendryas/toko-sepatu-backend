@@ -1,0 +1,186 @@
+<!-- Start Header -->
+<%- include('../templates/headeradmin.ejs') %>
+<!-- End Header -->
+
+<!-- Start Loader -->
+<%- include('../templates/loader.ejs') %>
+<!-- End Loader -->
+
+<!-- Start Navigation Bar-->
+<header id="topnav">
+    <!-- Start Topbar-main -->
+    <%- include('../templates/topbaradmin.ejs') %>
+    <!-- End Topbar-main -->
+
+    <!-- Start Navbar -->
+    <%- include('../templates/navbaradmin.ejs') %>
+    <!-- End Navbar -->
+</header>
+<!-- End Navigation Bar-->
+
+<!-- Start Wrapper -->
+<div class="wrapper">
+    <div class="container-fluid">
+
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="btn-group float-right">
+                        <ol class="breadcrumb hide-phone p-0 m-0">
+                            <li class="breadcrumb-item"><a href="#"></a>Master</li>
+                            <li class="breadcrumb-item active">Brand</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Data Master Brand</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        <div class="row">
+            <!--====START CONTENT HERE =====-->
+            <div class="col-lg-12">
+                <div class="card m-b-30">
+                    <div class="card-body">
+
+                        <h4 class="mt-0 header-title">Halaman data brand</h4>
+                        <p class="text-muted m-b-30 font-14">
+                            Pada halaman ini anda dapat menambahkan data, mengedit data, dan menghapus data brand.
+                        </p>
+
+                        <a href="#" class="btn btn-primary waves-effect waves-light mb-3" data-toggle="modal"
+                            data-target="#newTambahBrand">Tambah Data Brand</a>
+
+                        <div class="table-responsive">
+                            <table id="datatable" class="table table-bordered dt-responsive nowrap"
+                                style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nama Brand</th>
+                                        <th>Nama Category</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    <% no = 1 %>
+
+                                    <% dataBrand.forEach(brand => { %>
+                                    <tr class="text-center">
+                                        <th scope="row"><%= no %></th>
+                                        <td><%= brand.name %></td>
+
+                                        <% if(brand.category == null) { %>
+                                        <td> <i>Kategori Tidak di Temukan</i> </td>
+                                        <% } else { %>
+                                        <td><%= brand.category.name %></td>
+                                        <% } %>
+
+                                        <td>
+                                            <a href="#"><span class="badge badge-success" data-toggle="modal"
+                                                    data-target="#editBrand<%= brand.id %>">Edit</span></a>
+                                            <a href="/api/brands/delete/<%= brand.id %>"><span
+                                                    class="badge badge-danger ml-3">Delete</span></a>
+                                        </td>
+                                    </tr>
+                                    <%no++ %>
+                                    <% })%>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====END CONTENT HERE =====-->
+        </div>
+        <!-- end row -->
+    </div> <!-- end container -->
+</div>
+<!-- End Wrapper -->
+
+<!-- Start Tambah Brand -->
+<div class="modal fade" id="newTambahBrand" tabindex="-1" aria-labelledby="newTambahBrandLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newTambahBrandLabel">Tambah Brand Baru</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/api/brands/add" method="POST">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name">Nama Brand</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Input Nama Brand"
+                            autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category_Id">Nama Category</label><br>
+                        <select class="form-control selectpicker" data-live-search="true" autocomplete="off" required
+                            name="category_Id" id="category_Id">
+                            <option value="">- Pilih Nama Category -</option>
+                            <% dataCategory.forEach(category => { %>
+                            <option value="<%= category.id %>"><%= category.name %></option>
+                            <% } ) %>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Tambah Brand -->
+
+<!-- Start Edit Brand -->
+<% dataBrand.forEach(brand => { %>
+<div class="modal fade" id="editBrand<%= brand.id %>" tabindex="-1" aria-labelledby="editBrandLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBrandLabel">Edit Brand</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/api/brands/edit/<%= brand.id %>" method="POST">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name">Nama Brand</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Input Nama Brand"
+                            autocomplete="off" required value="<%= brand.name %> ">
+                    </div>
+                    <div class="form-group">
+                        <label for="category_Id">Nama Category</label><br>
+                        <select class="form-control selectpicker" data-live-search="true" autocomplete="off" required
+                            name="category_Id" id="category_Id">
+                            <option value="">- Pilih Nama Category -</option>
+                            <% dataCategory.forEach(category => { %>
+                            <option value="<%= category.id %>"><%= category.name %></option>
+                            <% } ) %>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<% })%>
+<!-- End Edit Brand -->
+
+<!-- Start Footer Text -->
+<%- include('../templates/footertextadmin.ejs') %>
+<!-- End Footer Text -->
+
+<!-- Start Footer -->
+<%- include('../templates/footeradmin.ejs') %>
+<!-- End Footer -->

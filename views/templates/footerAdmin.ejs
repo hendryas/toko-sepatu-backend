@@ -1,0 +1,41 @@
+<!-- jQuery  -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/modernizr.min.js"></script>
+<script src="/js/detect.js"></script>
+<script src="/js/fastclick.js"></script>
+<script src="/js/jquery.slimscroll.js"></script>
+<script src="/js/jquery.blockUI.js"></script>
+<script src="/js/waves.js"></script>
+
+<!-- App js -->
+<script src="/js/app.js"></script>
+
+<script>
+    //==START==//
+    //==Format Only input numbers==//
+    function isInputNumber(evt) {
+        var ch = String.fromCharCode(evt.which);
+        if (!(/[0-9]/.test(ch))) {
+            evt.preventDefault();
+        }
+    }
+    //==END==//
+    //==Format Only input numbers==//
+</script>
+
+<script>
+    //==START==//
+    //==Format upload file==//
+    $('.custom-file-input').on('change', function () {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    })
+
+    //==END==//
+    //==Format upload file==//
+</script>
+
+</body>
+
+</html>
