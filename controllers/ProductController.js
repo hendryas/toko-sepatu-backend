@@ -28,8 +28,7 @@ class ProductController {
 
     static async add(req, res) {
         try {
-            let { name, description, brand_Id, size, price, stock } = req.body;
-            let image = req.file.path;
+            let { name, description, brand_Id, image, size, price, stock } = req.body;
 
             let resultProduct = await product.create({
                 name: name,
@@ -50,16 +49,15 @@ class ProductController {
     static async edit(req, res) {
         try {
             const id = +req.params.id;
-            let { name, description, brand_Id, size, price, stock } = req.body;
-            let image = req.file.path;
+            let { name, description, brand_Id, image, size, price, stock } = req.body;
 
-            let resultProductById = await product.findOne({
-                where: { id }
-            });
+            // let resultProductById = await product.findOne({
+            //     where: { id }
+            // });
             // console.log(resultProductById);
-            let pathImage = resultProductById.image;
-            let filePath = path.join(__dirname, '../', pathImage);
-            fs.unlink(filePath, err => console.log(err));
+            // let pathImage = resultProductById.image;
+            // let filePath = path.join(__dirname, '../', pathImage);
+            // fs.unlink(filePath, err => console.log(err));
 
             let resultProduct = await product.update({
                 name: name,
@@ -82,15 +80,15 @@ class ProductController {
     static async delete(req, res) {
         try {
             const id = +req.params.id;
-            let resultProductById = await product.findOne({
-                where: { id }
-            });
-            let pathImage = resultProductById.image;
+            // let resultProductById = await product.findOne({
+            //     where: { id }
+            // });
+            // let pathImage = resultProductById.image;
             // console.log('dir name:', __dirname);
             // console.log('filePath', path);
-            let filePath = path.join(__dirname, '../', pathImage);
+            // let filePath = path.join(__dirname, '../', pathImage);
             // console.log(filePath);
-            fs.unlink(filePath, err => console.log(err));
+            // fs.unlink(filePath, err => console.log(err));
             // console.log(resultProductById.image)
             // console.log(id);
             let resultProduct = await product.destroy({
