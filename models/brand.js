@@ -16,8 +16,22 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   brand.init({
-    name: DataTypes.STRING,
-    category_Id: DataTypes.INTEGER
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          message: "Inputan Nama Brand Tidak Boleh Kosong!"
+        }
+      }
+    },
+    category_Id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          message: "Kategori harus dipilih!"
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'brand',

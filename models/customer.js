@@ -15,8 +15,22 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   customer.init({
-    name: DataTypes.STRING,
-    phone: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          message: "Inputan Nama Customer Tidak Boleh Kosong!"
+        }
+      }
+    },
+    phone: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          message: "Inputan Phone Customer Tidak Boleh Kosong!"
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'customer',
