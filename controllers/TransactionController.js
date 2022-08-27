@@ -1,4 +1,4 @@
-const { transaction } = require('../models');
+const { transaction, customer, product } = require('../models');
 
 class TransactionController {
     static async getBrands(req, res) {
@@ -8,8 +8,18 @@ class TransactionController {
                     ['id', 'desc']
                 ]
             })
-            res.json(resultTransaction);
-            // res.render('./transaction/index.ejs',{ title: 'Halaman Transaction', dataTransaction: resultTransaction});
+            let resultCustomer = await customer.findAll({
+                order: [
+                    ['id', 'desc']
+                ]
+            })
+            let resultProduct = await product.findAll({
+                order: [
+                    ['id', 'desc']
+                ]
+            })
+            // res.json(resultTransaction);
+            res.render('./transaction/index.ejs', { title: 'Halaman Transaction', dataTransaction: resultTransaction, dataCustomer: resultCustomer, dataProduct: resultProduct });
         } catch (err) {
             res.json(err);
         }
@@ -17,7 +27,7 @@ class TransactionController {
 
     static async add(req, res) {
         try {
-
+            let { product_Id, customer_Id } = req.body;
         } catch (err) {
             res.json(err);
         }
