@@ -58,14 +58,35 @@
                                 <thead class="text-center">
                                     <tr>
                                         <th>#</th>
-                                        <th>Nama Produk</th>
-                                        <th>Total Harga</th>
                                         <th>Nama Customer</th>
+                                        <th>Total Harga</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-center">
+                                    <% no = 1 %>
 
+                                    <% dataTransaction.forEach(transaction => { %>
+                                    <tr class="text-center">
+                                        <th scope="row"><%= no %></th>
+
+                                        <% if(transaction.customer == null) { %>
+                                        <td> <i>Nama Customer Tidak di Temukan</i> </td>
+                                        <% } else { %>
+                                        <td><%= transaction.customer.name %></td>
+                                        <% } %>
+
+                                        <td><%= convertRupiah.convert(transaction.totalPrice) %></td>
+
+                                        <td>
+                                            <a href="#"><span class="badge badge-success" data-toggle="modal"
+                                                    data-target="#editTransaction<%= transaction.id %>">Edit</span></a>
+                                            <a href="/api/transactions/delete/<%= transaction.id %>"><span
+                                                    class="badge badge-danger ml-3">Delete</span></a>
+                                        </td>
+                                    </tr>
+                                    <%no++ %>
+                                    <% })%>
                                 </tbody>
                             </table>
                         </div>
@@ -92,17 +113,22 @@
             </div>
             <form action="/api/transactions/add" method="POST">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="product_Id">Nama Produk</label><br>
-                        <select class="form-control selectpicker" data-live-search="true" autocomplete="off" required
-                            name="product_Id" id="product_Id">
-                            <option value="">- Pilih Nama Produk -</option>
-                            <% dataProduct.forEach(product => { %>
-                            <option value="<%= product.id %>"><%= product.name %></option>
-                            <% } ) %>
-                        </select>
+                    <div id="list_product">
+                        <div class="form-group isi_product">
+                            <label for="product_Id">Nama Produk</label><br>
+                            <select class="form-control selectpicker" data-live-search="true" autocomplete="off"
+                                required name="product_Id[]" id="product_Id">
+                                <option value="">- Pilih Nama Produk -</option>
+                                <% dataProduct.forEach(product => { %>
+                                <option value="<%= product.id %>"><%= product.name %></option>
+                                <% } ) %>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
+
+                    <a href="javascript:void(0);" class="btn btn-sm btn-primary tambah-product">Tambah Product</a>
+
+                    <div class="form-group mt-3">
                         <label for="customer_Id">Nama Customer</label><br>
                         <select class="form-control selectpicker" data-live-search="true" autocomplete="off" required
                             name="customer_Id" id="customer_Id">
@@ -174,5 +200,5 @@
 <!-- End Footer Text -->
 
 <!-- Start Footer -->
-<%- include('../templates/footeradmin.ejs') %>
+<%- include('../templates/footertransactionadmin.ejs') %>
 <!-- End Footer -->

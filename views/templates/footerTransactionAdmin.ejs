@@ -1,0 +1,66 @@
+<!-- jQuery  -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/modernizr.min.js"></script>
+<script src="/js/detect.js"></script>
+<script src="/js/fastclick.js"></script>
+<script src="/js/jquery.slimscroll.js"></script>
+<script src="/js/jquery.blockUI.js"></script>
+<script src="/js/waves.js"></script>
+
+<!-- App js -->
+<script src="/js/app.js"></script>
+
+<script>
+    //==START==//
+    //==Format Only input numbers==//
+    function isInputNumber(evt) {
+        var ch = String.fromCharCode(evt.which);
+        if (!(/[0-9]/.test(ch))) {
+            evt.preventDefault();
+        }
+    }
+    //==END==//
+    //==Format Only input numbers==//
+</script>
+
+<script>
+    //==START==//
+    //==Format upload file==//
+    $('.custom-file-input').on('change', function () {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    })
+
+    //==END==//
+    //==Format upload file==//
+</script>
+
+<!-- Start Tambah Product -->
+<script>
+    $('.tambah-product').click(function () {
+        const products =
+            `
+            <div class="form-group isi_product">
+                <label for="product_Id">Nama Produk</label><br>
+                    <select class="form-control selectpicker" data-live-search="true" autocomplete="off" required
+                    name="product_Id[]" id="product_Id">
+                    <option value="">- Pilih Nama Produk -</option>
+                    <% dataProduct.forEach(product => { %>
+                    <option value="<%= product.id %>"><%= product.name %></option>
+                    <% } ) %>
+                </select>
+                <a href="javascript:void(0);" class="btn btn-danger hapus-product">Hapus</a>
+            </div>
+        `;
+        $('#list_product').append(products);
+    });
+
+    $('#list_product').on('click', '.isi_product a', function () {
+        $(this).parents('.isi_product').remove();
+    });
+</script>
+
+</body>
+
+</html>

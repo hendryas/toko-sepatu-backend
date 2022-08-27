@@ -1,4 +1,5 @@
 const { transaction, customer, product } = require('../models');
+const convertRupiah = require('rupiah-format')
 
 class TransactionController {
     static async getBrands(req, res) {
@@ -6,7 +7,7 @@ class TransactionController {
             let resultTransaction = await transaction.findAll({
                 order: [
                     ['id', 'desc']
-                ]
+                ], include: [customer]
             })
             let resultCustomer = await customer.findAll({
                 order: [
@@ -19,7 +20,7 @@ class TransactionController {
                 ]
             })
             // res.json(resultTransaction);
-            res.render('./transaction/index.ejs', { title: 'Halaman Transaction', dataTransaction: resultTransaction, dataCustomer: resultCustomer, dataProduct: resultProduct });
+            res.render('./transaction/index.ejs', { title: 'Halaman Transaction', dataTransaction: resultTransaction, dataCustomer: resultCustomer, dataProduct: resultProduct, convertRupiah });
         } catch (err) {
             res.json(err);
         }
@@ -28,6 +29,33 @@ class TransactionController {
     static async add(req, res) {
         try {
             let { product_Id, customer_Id } = req.body;
+            let priceNum = 0;
+            // let namaProduct = [];
+            for (const productId of product_Id) {
+                let resultProduct = await product.findOne({
+                    where: {
+                        id: +productId
+                    }
+                })
+                // namaProduct.push(resultProduct.name);
+                priceNum += resultProduct.price;
+            }
+
+            for (const productId of product_Id) {
+                let resultTransactionCreate = await transaction.create({
+                    product_Id: +productId,
+                    totalPrice: priceNum,
+                    customer_Id: +customer_Id
+                })
+            }
+            // namaProduct.forEach(p => {
+            //     console.log(p)
+            // })
+            // console.log(namaProduct);
+            // console.log(priceNum);
+
+            res.redirect('/api/transactions');
+            // console.log(customer_Id);
         } catch (err) {
             res.json(err);
         }
